@@ -10,15 +10,19 @@ namespace YoungDisciple.CloneSpyUndo {
   internal class CloneSpyUndoer {
     private readonly StringBuilder log = new StringBuilder();
 
+    public static string LogFileName {
+      get {
+        return Path.Combine(Environment.CurrentDirectory, "log.txt");
+      }
+    }
+
     public void UndoFolder(string path, bool includeSubfolders) {
       try {
         var searchOption = includeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
         foreach (var fileName in Directory.EnumerateFiles(path, "*.lnk", searchOption))
           UndoFile(fileName);
-      }
-      finally {
-        var logFileName = Path.Combine(Environment.CurrentDirectory, "log.txt");
-        File.AppendAllText(logFileName, log.ToString());
+      } finally {
+        File.AppendAllText(LogFileName, log.ToString());
       }
     }
 
@@ -26,20 +30,29 @@ namespace YoungDisciple.CloneSpyUndo {
     }
 
     private void UndoFile(string fileName) {
-      var lk = Lnk.Lnk.LoadFile(fileName);
-      if (lk.Name == "Created by CloneSpy") {
-        var destinationFile = Path.Combine(Path.GetFullPath(fileName), Path.GetFileNameWithoutExtension(fileName));
-        if (!File.Exists(destinationFile)) {
-          var sourceFile = MakeSourceFileName(lk);
-          log.Append($"{DateTime.Now:s}  Copy {sourceFile} => {destinationFile}");
-          File.Copy(sourceFile, destinationFile);
-          log.AppendLine("   (success)");
-        }
-        log.Append($"Delete {fileName}");
-        File.Delete(fileName);
+      var lk = GetLnkFile(fileName);
+      if (lk == null || lk.Name != "Created by CloneSpy") return;
+      var destinationFile = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName));
+      if (!File.Exists(destinationFile)) {
+        var sourceFile = MakeSourceFileName(lk);
+        log.Append($"{DateTime.Now:s}  Copy {sourceFile} => {destinationFile}");
+        File.Copy(sourceFile, destinationFile);
         log.AppendLine("   (success)");
       }
+      log.Append($"{DateTime.Now:s}  Delete {fileName}");
+      File.Delete(fileName);
+      log.AppendLine("   (success)");
     }
+
+    private LnkFile GetLnkFile(string fileName) {
+      try {
+        return Lnk.Lnk.LoadFile(fileName);
+      } catch (Exception ex) {
+        log.AppendLine($"{DateTime.Now:s}  Error parsing {fileName}: {ex.Message}");
+        return null;
+      }
+    }
+
 
     private string MakeSourceFileName(LnkFile lk) {
       if (string.IsNullOrEmpty(lk.LocalPath))

@@ -1,6 +1,6 @@
 ﻿namespace YoungDisciple.CloneSpyUndo
 {
-  partial class Form1
+  partial class CloneSpyUndoerForm
   {
     /// <summary>
     /// Required designer variable.
@@ -33,6 +33,7 @@
       this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
       this.button2 = new System.Windows.Forms.Button();
       this.IncludeSubfolders = new System.Windows.Forms.CheckBox();
+      this.button3 = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // button1
@@ -51,7 +52,6 @@
       this.FolderPath.Name = "FolderPath";
       this.FolderPath.Size = new System.Drawing.Size(553, 20);
       this.FolderPath.TabIndex = 1;
-      this.FolderPath.Text = "G:\\layout\\_Archive\\2018Q3\\";
       // 
       // button2
       // 
@@ -75,16 +75,27 @@
       this.IncludeSubfolders.Text = "Include Subfolders";
       this.IncludeSubfolders.UseVisualStyleBackColor = true;
       // 
-      // Form1
+      // button3
+      // 
+      this.button3.Location = new System.Drawing.Point(357, 60);
+      this.button3.Name = "button3";
+      this.button3.Size = new System.Drawing.Size(75, 23);
+      this.button3.TabIndex = 4;
+      this.button3.Text = "Open Log";
+      this.button3.UseVisualStyleBackColor = true;
+      this.button3.Click += new System.EventHandler(this.Button3_Click);
+      // 
+      // CloneSpyUndoerForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(773, 95);
+      this.Controls.Add(this.button3);
       this.Controls.Add(this.IncludeSubfolders);
       this.Controls.Add(this.button2);
       this.Controls.Add(this.FolderPath);
       this.Controls.Add(this.button1);
-      this.Name = "Form1";
+      this.Name = "CloneSpyUndoerForm";
       this.Text = "CloneSpy Undo";
       this.ResumeLayout(false);
       this.PerformLayout();
@@ -98,6 +109,7 @@
     private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     private System.Windows.Forms.Button button2;
     private System.Windows.Forms.CheckBox IncludeSubfolders;
+    private System.Windows.Forms.Button button3;
   }
 }
 

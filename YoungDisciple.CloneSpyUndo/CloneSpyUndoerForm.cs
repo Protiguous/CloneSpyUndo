@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace YoungDisciple.CloneSpyUndo
 {
-  public partial class Form1 : Form
+  public partial class CloneSpyUndoerForm : Form
   {
-    public Form1()
+    public CloneSpyUndoerForm()
     {
       InitializeComponent();
     }
@@ -31,6 +31,10 @@ namespace YoungDisciple.CloneSpyUndo
     private void SelectFolder() {
       folderBrowserDialog1.ShowDialog();
       FolderPath.Text = folderBrowserDialog1.SelectedPath;
+    }
+
+    private void Button3_Click(object sender, EventArgs e) {
+      System.Diagnostics.Process.Start(CloneSpyUndoer.LogFileName);
     }
   }
 }
